@@ -132,8 +132,8 @@ export default function App() {
     </SuiBox>
   );
 
-    // Log the environment variable for debugging
-  console.log('REACT_APP_BACKEND_SERVER:', process.env.REACT_APP_BACKEND_SERVER);
+  // Log the environment variable for debugging
+  console.log("REACT_APP_BACKEND_SERVER:", process.env.REACT_APP_BACKEND_SERVER);
 
 
   return direction === "rtl" ? (
