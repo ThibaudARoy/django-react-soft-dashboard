@@ -39,6 +39,7 @@ import AuthApi from "../../../api/auth";
 import { useHistory } from "react-router-dom";
 
 function SignIn() {
+  console.log("Backend Server URL:", process.env.REACT_APP_BACKEND_SERVER);
   const history = useHistory();
   const { setUser } = useAuth();
   const { user } = useAuth();
