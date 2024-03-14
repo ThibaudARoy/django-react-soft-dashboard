@@ -1,22 +1,29 @@
-# pull official base image
-FROM node:14-alpine
+# Build Stage
+FROM node:14-alpine as build
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# install app dependencies
-COPY package.json ./
+# Install dependencies
 RUN npm install --silent
-RUN npm install react-scripts@4.0.0 -g --silent
 
-# add app
-COPY . ./
+# Copy the rest of the application code
+COPY . .
 
-# Expose port
-EXPOSE 3000
+# Build the app
+RUN npm run build
 
-# start app
-CMD ["npm", "start"]
+# Production Stage
+FROM nginx:stable-alpine
+
+# Copy the build output to replace the default nginx contents
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and keep it running in the foreground
+CMD ["nginx", "-g", "daemon off;"]
